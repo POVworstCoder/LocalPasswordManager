@@ -766,3 +766,8 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/venv,python,visualstudio,visualstudiocode,vue,vuejs,node,git
+
+# secret.key and db folder
+db
+database_encrypted.db
+secret.key
