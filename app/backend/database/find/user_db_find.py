@@ -5,13 +5,11 @@ from ..encryption.encrypt import decrypt_database,encrypt_database
 # Path to the database
 DB_PATH = "db/database.db"
 
-decrypt_database()
-
-# Connect to the SQLite database
-conn = sqlite3.connect(DB_PATH)
-cursor = conn.cursor()
 
 def find_all():
+    decrypt_database()
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
     # Execute SELECT * query
     cursor.execute("SELECT * FROM account")
 
@@ -27,3 +25,22 @@ def find_all():
     conn.close()
     
     return rows
+
+def find_by_id(id: int):
+    decrypt_database()
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute(f"""
+        SELECT * FROM account
+        WHERE id =  {id}
+    """)
+
+    row = cursor.fetchall()
+
+    print(row)
+
+    encrypt_database()
+
+    conn.close()
+
+    return row
