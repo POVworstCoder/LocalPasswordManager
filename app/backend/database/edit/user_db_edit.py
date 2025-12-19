@@ -40,3 +40,4 @@ def edit_account_id_column(id:int, column:str, data:str):
     encrypt_database()
 
     print(f"Successfully updated column: {column}")
+    return True
