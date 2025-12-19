@@ -1,14 +1,42 @@
 import sqlite3
 
-conn = sqlite3.connect("db/database.db")
-cursor = conn.cursor()
+from ..encryption.encrypt import decrypt_database,encrypt_database
+DB_PATH = "db/database.db"
 
-cursor.execute(
-    "INSERT INTO users (name, email, age) VALUES (?, ?, ?)",
-    ("Alice", "alice@email.com", 25)
-)
+def create_account(username="",email="",site_url="",password=""):
+    decrypt_database()
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
 
-conn.commit()
-conn.close()
+    cursor.execute(f"""
+            INSERT INTO account (username,email,site_url,password) VALUES 
+                ('{username}','{email}','{site_url}','{password}')
+        """)
+    
+    conn.commit()
+    conn.close()
 
-print("Data added!")
+    encrypt_database()
+
+    print("Succesfully added new account")
+    return True
+
+def edit_account_id_column(id:int, column:str, data:str):
+    if not id or not column:
+        print("Account, object not found! or column missing")
+        return False
+
+    decrypt_database()
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute(f"""
+            UPDATE account SET {column}='{data}' WHERE id = '{id}'
+        """)    
+
+    conn.commit()
+    conn.close()
+
+    encrypt_database()
+
+    print(f"Successfully updated column: {column}")
